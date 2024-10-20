@@ -1,0 +1,14 @@
+Deploy sender on Cchain
+forge create --rpc-url avalancheFuji --private-key $PRIVATE_KEY src/MessageBroker.sol:MessageBroker
+export SENDER_ADDRESS=0xeeF54d3eCa195FBCEFeDc6C7549F9c37DA0AA973
+
+deploy receiver magga
+forge create --rpc-url dispatchTestnet --private-key $PRIVATE_KEY src/MessageReceiver.sol:MessageReceiver
+export RECEIVER_ADDRESS=0xe336d36FacA76840407e6836d26119E1EcE0A2b4
+
+
+send tx on c chain
+cast send --rpc-url fuji-c --private-key $PRIVATE_KEY $SENDER_ADDRESS "sendMessage(address,string)" $RECEIVER_ADDRESS "Hello"
+
+read tx on magga
+cast call --rpc-url magga $RECEIVER_ADDRESS "lastMessage()(string)"
